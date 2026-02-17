@@ -1,0 +1,18 @@
+import numpy as np
+
+x = np.arange(10, 20)
+y = np.array([2, 1, 4, 5, 8, 12, 18, 25, 96, 48])
+
+r = np.corrcoef(x, y)
+print(r)
+
+from numpy.random import randn
+from numpy.random import seed
+from scipy.stats import pearsonr
+
+seed(1)
+data1 = 20 * randn(1000) + 100
+data2 = data1 + (10 * randn(1000) + 50)
+
+corr, _ = pearsonr(data1, data2)
+print('Pearsons correlation:', corr)
