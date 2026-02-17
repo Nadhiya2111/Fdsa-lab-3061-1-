@@ -1,0 +1,7 @@
+import numpy as np, matplotlib.pyplot as plt, seaborn as sb
+from scipy.stats import norm, pearsonr as pr
+x,d1=np.arange(140,180,.1),20*np.random.randn(100)+100
+d2=d1+(10*np.random.randn(100)+50); r,_=pr(d1,d2)
+plt.subplot(121);plt.fill_between(x,norm.pdf(x,160,5))
+plt.subplot(122,title=r);plt.scatter(d1,d2,c=d2)
+plt.plot(np.unique(d1),np.poly1d(np.polyfit(d1,d2,1))(np.unique(d1)),'r');plt.show()
