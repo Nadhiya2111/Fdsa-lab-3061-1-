@@ -1,0 +1,57 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+
+np.random.seed(42)
+n_samples = 545
+area = np.random.randint(2000, 12000, n_samples)
+price = 200000 + (area * 500) + (area**2 * 0.02) + np.random.normal(0, 500000, n_samples)
+
+housing = pd.DataFrame({'area': area, 'price': price})
+
+print(housing.head())
+
+df = housing.loc[:, ['area', 'price']]
+df_columns = df.columns
+
+scaler = MinMaxScaler()
+df = scaler.fit_transform(df)
+
+df = pd.DataFrame(df)
+df.columns = df_columns
+
+sns.regplot(x="area", y="price", data=df, fit_reg=False)
+plt.show()
+
+df_train, df_test = train_test_split(
+    df,
+    train_size=0.7,
+    test_size=0.3,
+    random_state=10
+)
+
+print(len(df_train))
+print(len(df_test))
+
+X_train = df_train['area'].values.reshape(-1, 1)
+y_train = df_train['price']
+
+X_test = df_test['area'].values.reshape(-1, 1)
+y_test = df_test['price']
+
+poly = PolynomialFeatures(degree=2)
+
+X_train_poly = poly.fit_transform(X_train)
+X_test_poly = poly.transform(X_test)
+
+model = LinearRegression()
+model.fit(X_train_poly, y_train)
+
+score = model.score(X_test_poly, y_test)
+print("Model Score =", score)
