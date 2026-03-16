@@ -1,0 +1,19 @@
+import numpy as np
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+
+X = np.array([[1], [5], [7], [8]])
+y = np.array([0, 1, 1, 1])
+
+model = LogisticRegression()
+model.fit(X, y)
+
+y_pred = model.predict(X)
+
+classes = np.unique(y)
+score = accuracy_score(y, y_pred)
+prediction_for_1 = model.predict([[1]])
+
+print(f"CLASSES: {classes}")
+print(f"SCORE: {score}")
+print(f"PREDICTION FOR HOURS [1]: {prediction_for_1}")
