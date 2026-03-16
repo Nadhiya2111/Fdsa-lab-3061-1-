@@ -1,0 +1,26 @@
+import pandas as pd
+import numpy as np
+from statsmodels.tsa.stattools import adfuller
+
+np.random.seed(42)
+data = np.random.standard_normal(100).cumsum()
+df = pd.DataFrame(data, columns=['value'])
+
+def check_stationarity(series):
+    result = adfuller(series)
+    p_value = result[1]
+    
+    print(f'ADF Statistic: {result[0]:.4f}')
+    print(f'p-value: {p_value:.4f}')
+    
+    if p_value <= 0.05:
+        print("Result: Stationary (Reject Null Hypothesis)")
+    else:
+        print("Result: Non-Stationary (Fail to Reject Null Hypothesis)")
+
+print("--- Testing Raw Data ---")
+check_stationarity(df['value'])
+
+print("\n--- Testing Differenced Data ---")
+df['diff'] = df['value'].diff().dropna()
+check_stationarity(df['diff'].dropna())
